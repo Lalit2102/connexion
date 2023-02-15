@@ -1,0 +1,36 @@
+.bg {
+  width: 100vw;
+  height: 100vh;
+  background-image: url(./images/bg.png);
+  background-size: cover;
+  position: absolute;
+  z-index: -1;
+}
+.name-container {
+  height: 100vh;
+  width: 40vw;
+}
+
+.mont {
+  font-family: "Montserrat", sans-serif;
+}
+.lato {
+  font-family: "Lato", sans-serif;
+}
+.title {
+  color: #a798e4;
+  font-size: 4em;
+}
+.btn-outline-primary,
+.btn-outline-primary:visited {
+  color: #a798e4 !important;
+  border-color: #a798e4 !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+  background-color: #a798e4 !important;
+  color: white !important;
+}
+.white {
+  color: white;
+}

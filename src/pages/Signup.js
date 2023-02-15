@@ -3,7 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -20,13 +19,17 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config.js";
 import { db } from "../firebase-config.js";
 import { collection, addDoc } from "firebase/firestore";
+import AppContext from "../Contexts/AppContexts.js";
 const theme = createTheme();
 
+//*BUG IN DEPARTMENT AND YEAR, WRONG VALUE BEING SUBMITTED - fixed to be tested
 //TODO: Show an alert if the email is already in use and redirect to login page.
 //TODO: Handle failed submit errors.
 //TODO: Handle if already logged in, immediately redirect.
 
 export default function SignInSide() {
+  const AppContexts = React.useContext(AppContext);
+  const { showAlert } = AppContexts;
   const {
     register,
     formState: { errors },
@@ -48,23 +51,25 @@ export default function SignInSide() {
       const userinfo = await addDoc(usersRef, {
         email: data.email,
         name: data.name,
-        department: data.department,
-        year: data.year,
+        department: dept,
+        year: year,
         phone: data.phone,
       });
       console.log("userinfo", userinfo);
       console.log("user", user);
+      showAlert(`Welcome to Connexion ${data.name}`, "success");
       reset({
         name: "",
         email: "",
         password: "",
         confirmpassword: "",
         phone: "",
-        department: "cse",
-        year: 1,
+        department: "",
+        year: null,
       });
     } catch (error) {
       console.log(error.message);
+      showAlert(error.code.substring(5), "error");
     }
   };
 
