@@ -19,7 +19,11 @@ import { query, collection, where, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase-config.js";
 import AppContext from "../Contexts/AppContexts.js";
 
-const theme = createTheme();
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 //TODO: Handle if already logged in, immediately redirect.
 
@@ -69,7 +73,7 @@ export default function Signin() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

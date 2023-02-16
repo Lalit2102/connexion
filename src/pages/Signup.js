@@ -19,8 +19,13 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config.js";
 import { db } from "../firebase-config.js";
 import { collection, addDoc } from "firebase/firestore";
+import { Link } from "react-router-dom";
 import AppContext from "../Contexts/AppContexts.js";
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 //*BUG IN DEPARTMENT AND YEAR, WRONG VALUE BEING SUBMITTED - fixed to be tested
 //TODO: Show an alert if the email is already in use and redirect to login page.
@@ -265,6 +270,9 @@ export default function SignInSide() {
                 Signup
               </Button>
             </form>
+            <Grid item>
+              <Link to="/signin">{"Have an account? Sign In"}</Link>
+            </Grid>
           </Box>
         </Grid>
       </Grid>
