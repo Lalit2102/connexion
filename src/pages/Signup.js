@@ -34,7 +34,7 @@ const theme = createTheme({
 
 export default function SignInSide() {
   const AppContexts = React.useContext(AppContext);
-  const { showAlert } = AppContexts;
+  const { showAlert, showSpinner } = AppContexts;
   const {
     register,
     formState: { errors },
@@ -48,6 +48,7 @@ export default function SignInSide() {
   const onSubmit = async (data) => {
     const usersRef = collection(db, "users");
     try {
+      showSpinner(true);
       const user = await createUserWithEmailAndPassword(
         auth,
         data.email,
@@ -62,6 +63,7 @@ export default function SignInSide() {
       });
       console.log("userinfo", userinfo);
       console.log("user", user);
+      showSpinner(false);
       showAlert(`Welcome to Connexion ${data.name}`, "success");
       reset({
         name: "",
@@ -73,6 +75,7 @@ export default function SignInSide() {
         year: null,
       });
     } catch (error) {
+      showSpinner(false);
       console.log(error.message);
       showAlert(error.code.substring(5), "error");
     }
@@ -90,10 +93,10 @@ export default function SignInSide() {
           sx={{
             backgroundImage: "url(https://source.unsplash.com/random)",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
+            // backgroundColor: (t) =>
+            //   t.palette.mode === "light"
+            //     ? t.palette.grey[50]
+            //     : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -101,7 +104,7 @@ export default function SignInSide() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 4,
               mx: 4,
               display: "flex",
               flexDirection: "column",

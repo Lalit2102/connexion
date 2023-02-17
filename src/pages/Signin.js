@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -29,7 +29,7 @@ const darkTheme = createTheme({
 
 export default function Signin() {
   const AppContexts = useContext(AppContext);
-  const { showAlert } = AppContexts;
+  const { showAlert, showSpinner } = AppContexts;
   const {
     register,
     formState: { errors },
@@ -39,8 +39,13 @@ export default function Signin() {
   } = useForm();
   const usersRef = collection(db, "users");
 
+  useEffect(() => {
+    console.log(auth.currentUser);
+  }, []);
+
   const onSubmit = async (data) => {
     try {
+      showSpinner(true);
       const user = await signInWithEmailAndPassword(
         auth,
         data.email,
@@ -52,9 +57,12 @@ export default function Signin() {
       q1.forEach((doc) => {
         name = doc.data().name;
       });
+      showSpinner(false);
       showAlert(`Welcome Back ${name}!`, "success");
       reset({ email: "", password: "" });
     } catch (e) {
+      showSpinner(false);
+      showAlert(e.code.substring(5), "error");
       console.log(e);
     }
   };

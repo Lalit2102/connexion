@@ -6,9 +6,11 @@ import Landing from "./pages/Landing";
 import Signin from "./pages/Signin";
 import AppContext from "./Contexts/AppContexts";
 import Alerts from "./components/Alert";
+import Spinner from "./components/Spinner";
 
 function App() {
   const [alert, setAlert] = useState(null);
+  const [loading, setLoading] = useState(false);
   const showAlert = (message, type) => {
     setAlert({
       type: type,
@@ -18,11 +20,15 @@ function App() {
       setAlert(null);
     }, 4000);
   };
+  const showSpinner = (value) => {
+    setLoading(value);
+  };
   return (
     <div className="App">
-      <AppContext.Provider value={{ showAlert }}>
+      <AppContext.Provider value={{ showAlert, showSpinner }}>
         <Router>
           <Alerts alert={alert} />
+          <Spinner loading={loading} />
           <Switch>
             <Route exact path="/" component={Landing} />
             <Route exact path="/signup" component={Signup} />
