@@ -18,6 +18,7 @@ import {
 import { query, collection, where, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase-config.js";
 import AppContext from "../Contexts/AppContexts.js";
+import { useHistory } from "react-router-dom";
 
 const darkTheme = createTheme({
   palette: {
@@ -25,9 +26,10 @@ const darkTheme = createTheme({
   },
 });
 
-//TODO: Handle if already logged in, immediately redirect.
+//TODO: Handle if already logged in, immediately redirect. - done
 
 export default function Signin() {
+  const navigate = useHistory();
   const AppContexts = useContext(AppContext);
   const { showAlert, showSpinner } = AppContexts;
   const {
@@ -40,17 +42,15 @@ export default function Signin() {
   const usersRef = collection(db, "users");
 
   useEffect(() => {
-    console.log(auth.currentUser);
+    if (localStorage.getItem("auth-token")) {
+      navigate.push("/home");
+    }
   }, []);
 
   const onSubmit = async (data) => {
     try {
       showSpinner(true);
-      const user = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
+      await signInWithEmailAndPassword(auth, data.email, data.password);
       let name = "";
       const q = query(usersRef, where("email", "==", data.email));
       const q1 = await getDocs(q);
@@ -58,8 +58,10 @@ export default function Signin() {
         name = doc.data().name;
       });
       showSpinner(false);
+      localStorage.setItem("auth-token", auth.currentUser.refreshToken);
       showAlert(`Welcome Back ${name}!`, "success");
       reset({ email: "", password: "" });
+      navigate.push("/home");
     } catch (e) {
       showSpinner(false);
       showAlert(e.code.substring(5), "error");

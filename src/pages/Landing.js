@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 //import { Button } from "@mui/material";
 import { Link, useHistory } from "react-router-dom";
 
@@ -6,6 +6,10 @@ import { Link, useHistory } from "react-router-dom";
 
 function Landing() {
   const history = useHistory();
+  useEffect(() => {
+    if (localStorage.getItem("auth-token")) history.push("/home");
+  }, []);
+
   return (
     <>
       <div className="bg"></div>

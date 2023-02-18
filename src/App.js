@@ -7,6 +7,7 @@ import Signin from "./pages/Signin";
 import AppContext from "./Contexts/AppContexts";
 import Alerts from "./components/Alert";
 import Spinner from "./components/Spinner";
+import Home from "./pages/Home";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -33,6 +34,7 @@ function App() {
             <Route exact path="/" component={Landing} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/signin" component={Signin} />
+            <Route exact path="/home" component={Home} />
           </Switch>
         </Router>
       </AppContext.Provider>

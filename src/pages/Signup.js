@@ -20,6 +20,7 @@ import { auth } from "../firebase-config.js";
 import { db } from "../firebase-config.js";
 import { collection, addDoc } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AppContext from "../Contexts/AppContexts.js";
 const theme = createTheme({
   palette: {
@@ -28,11 +29,12 @@ const theme = createTheme({
 });
 
 //*BUG IN DEPARTMENT AND YEAR, WRONG VALUE BEING SUBMITTED - fixed to be tested
-//TODO: Show an alert if the email is already in use and redirect to login page.
-//TODO: Handle failed submit errors.
-//TODO: Handle if already logged in, immediately redirect.
+//TODO: Show an alert if the email is already in use and redirect to login page. - done
+//TODO: Handle failed submit errors. - done
+//TODO: Handle if already logged in, immediately redirect. - done
 
 export default function SignInSide() {
+  const navigate = useHistory();
   const AppContexts = React.useContext(AppContext);
   const { showAlert, showSpinner } = AppContexts;
   const {
@@ -65,6 +67,7 @@ export default function SignInSide() {
       console.log("user", user);
       showSpinner(false);
       showAlert(`Welcome to Connexion ${data.name}`, "success");
+      localStorage.setItem("auth-token", auth.currentUser.refreshToken);
       reset({
         name: "",
         email: "",
@@ -74,6 +77,7 @@ export default function SignInSide() {
         department: "",
         year: null,
       });
+      navigate.push("/home");
     } catch (error) {
       showSpinner(false);
       console.log(error.message);
