@@ -45,7 +45,7 @@ export default function Signin() {
     if (localStorage.getItem("auth-token")) {
       navigate.push("/home");
     }
-  }, []);
+  });
 
   const onSubmit = async (data) => {
     try {
@@ -136,11 +136,11 @@ export default function Signin() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <a
+                <p
                   style={{ color: "#0a58ca", textDecoration: "underline" }}
                   onClick={resetPassword}>
                   Forgot password?
-                </a>
+                </p>
               </Grid>
               <Grid item>
                 <Link to="/signup">{"Don't have an account? Sign Up"}</Link>

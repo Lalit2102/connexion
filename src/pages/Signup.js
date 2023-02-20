@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect, useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,13 +9,12 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase-config.js";
 import { db } from "../firebase-config.js";
 import { collection, addDoc } from "firebase/firestore";
@@ -35,7 +34,7 @@ const theme = createTheme({
 
 export default function SignInSide() {
   const navigate = useHistory();
-  const AppContexts = React.useContext(AppContext);
+  const AppContexts = useContext(AppContext);
   const { showAlert, showSpinner } = AppContexts;
   const {
     register,
@@ -46,7 +45,11 @@ export default function SignInSide() {
   } = useForm();
   const [dept, setDept] = useState("cse");
   const [year, setYear] = useState(1);
-
+  useEffect(() => {
+    if (localStorage.getItem("auth-token")) {
+      navigate.push("/home");
+    }
+  });
   const onSubmit = async (data) => {
     const usersRef = collection(db, "users");
     try {
@@ -56,15 +59,18 @@ export default function SignInSide() {
         data.email,
         data.password
       );
+      console.log("user", user.user.uid);
       const userinfo = await addDoc(usersRef, {
+        uid: user.user.uid,
         email: data.email,
+        usn: data.email.substring(0, 10),
         name: data.name,
         department: dept,
         year: year,
         phone: data.phone,
       });
-      console.log("userinfo", userinfo);
-      console.log("user", user);
+      await updateProfile(auth.currentUser, { displayName: data.name });
+      // console.log("userinfo", userinfo);
       showSpinner(false);
       showAlert(`Welcome to Connexion ${data.name}`, "success");
       localStorage.setItem("auth-token", auth.currentUser.refreshToken);

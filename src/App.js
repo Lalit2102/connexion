@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
@@ -8,8 +8,16 @@ import AppContext from "./Contexts/AppContexts";
 import Alerts from "./components/Alert";
 import Spinner from "./components/Spinner";
 import Home from "./pages/Home";
-
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
 function App() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+  }, []);
+
   const [alert, setAlert] = useState(null);
   const [loading, setLoading] = useState(false);
   const showAlert = (message, type) => {
@@ -26,7 +34,7 @@ function App() {
   };
   return (
     <div className="App">
-      <AppContext.Provider value={{ showAlert, showSpinner }}>
+      <AppContext.Provider value={{ showAlert, showSpinner, user }}>
         <Router>
           <Alerts alert={alert} />
           <Spinner loading={loading} />

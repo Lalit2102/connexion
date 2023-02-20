@@ -8,7 +8,7 @@ function Landing() {
   const history = useHistory();
   useEffect(() => {
     if (localStorage.getItem("auth-token")) history.push("/home");
-  }, []);
+  });
 
   return (
     <>
