@@ -6,11 +6,23 @@
   position: absolute;
   z-index: -1;
 }
+* {
+  color: white;
+}
 .name-container {
   height: 100vh;
   width: 40vw;
 }
-
+/* * {
+  border: 1px solid red;
+} */
+body {
+  height: 100vh;
+  overflow-y: hidden;
+}
+.nunito {
+  font-family: "Nunito", sans-serif;
+}
 .mont {
   font-family: "Montserrat", sans-serif;
 }
@@ -18,7 +30,7 @@
   font-family: "Lato", sans-serif;
 }
 .title {
-  color: #a798e4;
+  color: #a798e4 !important;
   font-size: 4em;
 }
 .btn-outline-primary,

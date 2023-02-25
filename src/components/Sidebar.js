@@ -12,36 +12,39 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppContext from "../Contexts/AppContexts";
 import { Scrollbars } from "react-custom-scrollbars";
+import { useHistory } from "react-router-dom";
 // import { IconButton } from "@mui/material";
 const theme = createTheme({
   palette: {
     mode: "dark",
   },
 });
+
 function Sidebar() {
+  const history = useHistory();
   const dm = [
     {
       name: "Vedant",
-      uid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
+      rid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
     },
     {
       name: "Raghav",
-      uid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
+      rid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
     },
     {
       name: "Lalit",
-      uid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
+      rid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
     },
     {
       name: "Kavya",
-      uid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
+      rid: "0x3MuJK7zZdUgNBZh4O1IotGjWg1",
     },
   ];
   const people = ["Vedant", "Raghav", "Kavya", "Lalit"];
   const channel = ["Study Resources", "Ads", "CSGO", "Fortnight"];
   const context = useContext(AppContext);
   const { user } = context;
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const toggleDrawer = (value) => (event) => {
     if (
       event.type === "keydown" &&
@@ -53,7 +56,11 @@ function Sidebar() {
   };
   const list = () => (
     <Box
-      sx={{ width: 250, backgroundColor: "#141414!important", height: "100vh" }}
+      sx={{
+        width: "250px",
+        backgroundColor: "#141414!important",
+        height: "100vh",
+      }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}>
@@ -88,7 +95,12 @@ function Sidebar() {
           {dm.map((person, index) => (
             <ListItem key={person.name} disablePadding>
               <ListItemButton>
-                <ListItemText primary={person.name} />
+                <ListItemText
+                  primary={person.name}
+                  onClick={() => {
+                    history.push(`/chat/${user.rid}`);
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -120,12 +132,16 @@ function Sidebar() {
     <>
       <Fragment>
         <RxHamburgerMenu
-          style={{ color: "white" }}
+          style={{ color: "white", fontSize: "2rem" }}
+          className="m-4"
           onClick={toggleDrawer(true)}
         />
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+          <Drawer
+            anchor="left"
+            open={open}
+            onClose={window.innerWidth < 750 ? toggleDrawer(false) : undefined}>
             {list()}
           </Drawer>
         </ThemeProvider>

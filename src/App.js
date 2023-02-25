@@ -10,6 +10,7 @@ import Spinner from "./components/Spinner";
 import Home from "./pages/Home";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
+import Chat from "./components/Chat";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -43,6 +44,7 @@ function App() {
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/signin" component={Signin} />
             <Route exact path="/home" component={Home} />
+            <Route path="/chat/:rid" component={Chat} />
           </Switch>
         </Router>
       </AppContext.Provider>
