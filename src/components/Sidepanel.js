@@ -10,7 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 // import { createTheme, ThemeProvider } from "@mui/material/styles";
 // import CssBaseline from "@mui/material/CssBaseline";
 import AppContext from "../Contexts/AppContexts";
-import { Scrollbars } from "react-custom-scrollbars";
+import { Scrollbars } from "react-custom-scrollbars-2";
 import { useHistory } from "react-router-dom";
 
 function Sidepanel(props) {

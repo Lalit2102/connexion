@@ -60,7 +60,7 @@ export default function SignInSide() {
         data.password
       );
       console.log("user", user.user.uid);
-      const userinfo = await addDoc(usersRef, {
+      await addDoc(usersRef, {
         uid: user.user.uid,
         email: data.email,
         usn: data.email.substring(0, 10),

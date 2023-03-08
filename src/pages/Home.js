@@ -5,7 +5,6 @@ import React, { useState, useEffect } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Sidepanel from "../components/Sidepanel";
 function Home() {
-  const pageWidth = window.innerWidth;
   const [show, setShow] = useState(() => {
     if (window.innerWidth < 750) return false;
     return true;
